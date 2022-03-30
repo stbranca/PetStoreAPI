@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.CoreMatchers.is;
+
 
 public class Pets {
     // Attributes
@@ -36,6 +38,12 @@ public class Pets {
                 .then()
                 .log().all()
                 .statusCode(200)
+                .body("name", is("Marley"))
+                .body("status", is("available"))
         ;
     }
 }
+//"id": 9223372016854973557
+//"id": 9223372016854973577
+//"id": 9223372016854973582
+//"id": 1947090936
