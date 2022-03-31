@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.contains;
 
 
 public class Pets {
@@ -20,7 +21,7 @@ public class Pets {
     }
 
     // Include - Create - Post
-    @Test
+    @Test(priority = 1)
     public void incluirPet() throws IOException {
         String jsonBody = lerJson("db/pet.json");
 
@@ -40,10 +41,32 @@ public class Pets {
                 .statusCode(200)
                 .body("name", is("Marley"))
                 .body("status", is("available"))
+                .body("category.name", is("BMX45YHE2"))
+                .body("tags.name", contains("Sta"))
         ;
     }
+    @Test(priority = 2)
+    public void consultarPet() {
+        String petId = "1947090936";
+        String token =
+
+        given()
+                .contentType("application/json")
+                .log().all()
+
+                .when()
+                .get(uri + "/" + petId)
+
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("name", is("Marley"))
+                .body("category.name", is("BMX45YHE2"))
+                .body("status", is("available"))
+                .extract()
+                .path("category.name")
+                ;
+        System.out.println("O token é " + token);
+
+    }
 }
-//"id": 9223372016854973557
-//"id": 9223372016854973577
-//"id": 9223372016854973582
-//"id": 1947090936
